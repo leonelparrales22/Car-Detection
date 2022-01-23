@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from datetime import datetime, timezone
 import psycopg2
+import math
 
 def conexionPostgres():
     connection = psycopg2.connect(user="postgres",
@@ -52,12 +53,30 @@ def InsertarCarDetectionRegistration():
 
 @app.route("/ObtenerCarDetectionRegistration", methods=['GET'])
 def ObtenerCarDetectionRegistration():
+    offset = request.args.get('offset')
     try:
         connection = conexionPostgres()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM car_detection_registration")
+        cursor.execute("SELECT * FROM car_detection_registration order by fecha desc limit 5 offset " + offset)
         record = cursor.fetchall()
         return jsonify(record)
+    except (Exception, psycopg2.Error) as error:
+        print("Failed to get records from car_detection_registration table", error)
+    finally:
+        if (connection):
+            cursor.close()
+            connection.close()
+    return jsonify([])
+
+@app.route("/ObtenerCarDetectionRegistrationPaginado", methods=['GET'])
+def ObtenerCarDetectionRegistrationPaginado():
+    try:
+        connection = conexionPostgres()
+        cursor = connection.cursor()
+        cursor.execute("select count(id_car_detection_registration) from car_detection_registration cdr" )
+        record = cursor.fetchall()
+        rounded = math.ceil(record[0][0]/5)
+        return str(rounded)
     except (Exception, psycopg2.Error) as error:
         print("Failed to get records from car_detection_registration table", error)
     finally:
