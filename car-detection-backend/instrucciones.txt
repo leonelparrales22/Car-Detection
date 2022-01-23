@@ -1,0 +1,2 @@
+Ejecutar con:
+flask run
