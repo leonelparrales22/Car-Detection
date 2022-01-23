@@ -1,2 +1,31 @@
 Ejecutar con:
 flask run
+
+El nombr de la base se la creará como:
+Car_Detection 
+
+Para mandar a guardar el post en el servicio InsertarCarDetectionRegistration se debe usar el siguiente Body:
+{
+"placa": "AAA-333",
+"ruta_frame": "PRUEBA RUTA FRAME",
+"ruta_placa": "PRUEBA RUTA PLACA",
+"tipo": 1
+}
+
+
+Script para la creación de la tabla:
+
+CREATE SEQUENCE public.car_detection_registration_id_car_detection_registration_seq;
+
+CREATE TABLE public.CAR_DETECTION_REGISTRATION (
+                id_car_detection_registration INTEGER NOT NULL DEFAULT nextval('public.car_detection_registration_id_car_detection_registration_seq'),
+                fecha TIMESTAMP NOT NULL,
+                placa VARCHAR(100) NOT NULL,
+                ruta_frame VARCHAR(1000) NOT NULL,
+                ruta_placa VARCHAR(1000) NOT NULL,
+                tipo INTEGER NOT NULL,
+                CONSTRAINT car_detection_registration_pk PRIMARY KEY (id_car_detection_registration)
+);
+
+
+ALTER SEQUENCE public.car_detection_registration_id_car_detection_registration_seq OWNED BY public.CAR_DETECTION_REGISTRATION.id_car_detection_registration;
