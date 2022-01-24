@@ -3,6 +3,9 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime, timezone
 import psycopg2
 import math
+import numpy as np
+import easyocr
+
 
 def conexionPostgres():
     connection = psycopg2.connect(user="postgres",
@@ -11,6 +14,21 @@ def conexionPostgres():
                                   port="5432",
                                   database="Car_Detection")
     return connection;
+
+
+def ocr_plate(cropped_image):
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(cropped_image, text_threshold=0.70)
+    placa = []
+    for i in range(len(result)):
+        placa.append(result[i][1])
+    return placa
+
+def listToString(s):
+    str1 = ""
+    for ele in s:
+        str1 += ele
+    return str1
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -84,3 +102,26 @@ def ObtenerCarDetectionRegistrationPaginado():
             cursor.close()
             connection.close()
     return jsonify([])
+
+@app.route("/RealziarOCR", methods=['POST'])
+def RealziarOCR():
+    estado = "200"
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        json = request.json
+        try:
+            for objeto in json:
+                #print(type(objeto["frame"]))
+                #print(objeto["filename"])
+                #print(objeto["fecha"])
+                newtuple = tuple(objeto["datashape"].split(' '))
+                frame = np.fromstring(objeto["frame"], sep=' ').reshape(tuple(map(int, newtuple)))
+                dd = listToString(ocr_plate(frame))
+                print(dd)
+            return estado
+        except Exception as error:
+            print("Failed: ", error)
+            estado = "500"
+    else:
+        estado = "300"
+    return estado
