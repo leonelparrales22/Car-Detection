@@ -72,10 +72,13 @@ def InsertarCarDetectionRegistration():
 @app.route("/ObtenerCarDetectionRegistration", methods=['GET'])
 def ObtenerCarDetectionRegistration():
     offset = request.args.get('offset')
+    desde = request.args.get('desde')
+    hasta = request.args.get('hasta')
+    queryDate = f"where fecha > '{desde}' and fecha < '{hasta}'"
     try:
         connection = conexionPostgres()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM car_detection_registration order by fecha desc limit 5 offset " + offset)
+        cursor.execute(f"SELECT * FROM car_detection_registration {queryDate} order by fecha desc limit 5 offset " + offset)
         record = cursor.fetchall()
         return jsonify(record)
     except (Exception, psycopg2.Error) as error:
@@ -91,7 +94,10 @@ def ObtenerCarDetectionRegistrationPaginado():
     try:
         connection = conexionPostgres()
         cursor = connection.cursor()
-        cursor.execute("select count(id_car_detection_registration) from car_detection_registration cdr" )
+        desde = request.args.get('desde')
+        hasta = request.args.get('hasta')
+        queryDate = f"where fecha > '{desde}' and fecha < '{hasta}'"
+        cursor.execute(f"select count(id_car_detection_registration) from car_detection_registration {queryDate}" )
         record = cursor.fetchall()
         rounded = math.ceil(record[0][0]/5)
         return str(rounded)

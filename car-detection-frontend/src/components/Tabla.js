@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import * as constantes from "../Constantes";
+import DateTimePicker from "@mui/lab/DateTimePicker";
+import TextField from "@mui/material/TextField";
+
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 const Tabla = () => {
+  const [valueHasta, setValueHasta] = React.useState(new Date(Date.now()));
+
+  const handleChangeHasta = (newValue) => {
+    setValueHasta(newValue);
+  };
+  var dt = new Date(Date.now());
+  dt.setDate(dt.getDate() - 10);
+
+  const [valueDesde, setValueDesde] = React.useState(dt);
+
+  const handleChangeDesde = (newValue) => {
+    setValueDesde(newValue);
+  };
+
   const [paginaActual, setPaginaActual] = useState(1);
 
-  const { loading, data } = useFetch(`${constantes.ObtenerCarDetectionRegistration}?offset=${5 * (paginaActual - 1)}`);
-  const { data: dataPaginado } = useFetch(`${constantes.ObtenerCarDetectionRegistrationPaginado}`);
+  const { loading, data } = useFetch(`${constantes.ObtenerCarDetectionRegistration}?offset=${5 * (paginaActual - 1)}&desde=${valueDesde.toISOString()}&hasta=${valueHasta.toISOString()}`);
+  const { data: dataPaginado } = useFetch(`${constantes.ObtenerCarDetectionRegistrationPaginado}?desde=${valueDesde.toISOString()}&hasta=${valueHasta.toISOString()}`);
 
   const [registro, setRegistro] = useState([]);
 
@@ -25,7 +44,7 @@ const Tabla = () => {
   };
 
   const handleSetPaginadoDecrementar = () => {
-    if (paginaActual != 1) {
+    if (paginaActual !== 1) {
       setPaginaActual(paginaActual - 1);
     }
   };
@@ -36,6 +55,19 @@ const Tabla = () => {
         <div className="alert alert-info text-center">Cargando...</div>
       ) : (
         <div className="animate__animated animate__fadeIn">
+          <div className="row mb-5 mt-5">
+            <div className="col text-center">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker label="Desde" value={valueDesde} onChange={handleChangeDesde} renderInput={(params) => <TextField {...params} />} />
+              </LocalizationProvider>
+            </div>
+            <div className="col text-center">
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker label="Hasta" value={valueHasta} onChange={handleChangeHasta} renderInput={(params) => <TextField {...params} />} />
+              </LocalizationProvider>
+            </div>
+          </div>
+
           <table className="table table-hover">
             <thead>
               <tr>
@@ -61,15 +93,16 @@ const Tabla = () => {
                 })}
             </tbody>
           </table>
-          <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#" onClick={() => handleSetPaginadoDecrementar()}>
-                  Anterior
-                </a>
-              </li>
-              {dataPaginado &&
-                Array.from(Array(dataPaginado).keys()).map((element) => {
+
+          {dataPaginado && dataPaginado !== 0 ? (
+            <nav aria-label="Page navigation example">
+              <ul className="pagination">
+                <li className="page-item">
+                  <a className="page-link" href="#" onClick={() => handleSetPaginadoDecrementar()}>
+                    Anterior
+                  </a>
+                </li>
+                {Array.from(Array(dataPaginado).keys()).map((element) => {
                   return (
                     <li className="page-item" key={element} onClick={() => handleSetPaginado(element + 1)}>
                       <a className="page-link" href="#">
@@ -78,13 +111,16 @@ const Tabla = () => {
                     </li>
                   );
                 })}
-              <li class="page-item">
-                <a className="page-link" href="#" onClick={() => handleSetPaginadoIncrementar()}>
-                  Siguiente
-                </a>
-              </li>
-            </ul>
-          </nav>
+                <li className="page-item">
+                  <a className="page-link" href="#" onClick={() => handleSetPaginadoIncrementar()}>
+                    Siguiente
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          ) : (
+            <h2>No se encontró ningún registro.</h2>
+          )}
         </div>
       )}
     </>
