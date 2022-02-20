@@ -1,0 +1,24 @@
+https://www.facebook.com/groups/1438733909722091/user/100002400224223/
+
+Video 9am pequeño
+
+Placa 1 -> ['PBN 3173'] -> Placa real ['PBW 3173']
+Placa 2 -> ['PCS 5494'] -> Placa real ['PCS 5494']
+
+Video 2
+Placa 1 -> ['PDE-2021'] -> real ['PDE-2021']
+Placa 2 -> ['PBDD-8129 '] -> real ['PDD-8129']
+Placa 3 -> ['IBD 8723'] -> real ['IBD 8723']
+Placa 4 -> ['IPBU 4259'] -> real ['PBU 4359']
+Placa 5 -> ['PLL59'] -> real ['PYY-594']
+Placa 6 -> ['PCM:', '2833'] -> real ['PCM-2833']
+Placa 7 -> ['PBL - 2809'] -> real ['PBL - 2809'] 
+Placa 8 -> ['P0K-910'] -> real ['P0Y-910']
+Placa 9 -> ['LUD'] -> real ['PCM-2041']
+Placa 10 -> ['PCU-5074'] -> real['PCU-5074']
+Placa 11 -> ['PCY-3579'] -> real ['PCY-3579']
+Placa 12 -> ['PCK-2971'] -> real ['PCV-2971']
+
+
+
+
