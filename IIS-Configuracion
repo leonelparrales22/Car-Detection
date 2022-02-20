@@ -22,4 +22,5 @@
 
 4.- Publicar en IIS la aplicacion de Flask
     4.1 Seguir el siguiente tutorial https://programmerclick.com/article/7273813279/
-    4.2 Se deja como referencia un web.config de ejemplo en el repositorio
+    4.2 Configurar la aplicacion en el puerto 5000 .
+    4.3 Se deja como referencia un web.config de ejemplo en el repositorio
