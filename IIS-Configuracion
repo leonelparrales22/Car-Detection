@@ -1,0 +1,25 @@
+1.- Instalar el servidor IIS. 
+    1.1 Abra el Panel de control y haga clic en Programas y características > Activar o desactivar las características de Windows.
+    1.2 Añadir la de Internet Information Services (Se seleccionaran los paquetes por defecto)
+
+2.- Configurar directorio virtual
+    2.1 Crear una carpeta que se va a configurar como directorio virtual. Ejemplo: C:\Images-Car-Detection
+    2.2 Abrir IIS
+    2.3 En el Default Web Site seleccionar "Agregar directorio virtual"
+    2.4 En alias escribir "CarDetectionRegistrationPhotos"
+    2.5 En ruta de acceso física seleccion la carpeta creada en 2.1
+
+3.- Publicar la aplicacion de React en el IIS
+    3.1 Crear una carpeta que se va a configurar como directorio virtual. Ejemplo: C:\React-Car-Detection
+    3.2 Abir IIS
+    3.3 En el Default Web Site seleccionar "Agregar directorio virtual"
+    3.4 En alias escribir "AdminCarDetection"
+    3.1 Dentro de la carpeta "car-detection-frontend" ejecutar el comando "npm install"
+    3.2 Ejecutar el comando "npm build"
+    3.3 Copiar todos los archivos de la carpeta build que se genera
+    3.4 Pegarlos en el directorio del paso 3.1
+    3.5 Acceder a la ruta virtual para visualizar la aplicacion: "http://localhost/AdminCarDetection/"
+
+4.- Publicar en IIS la aplicacion de Flask
+    4.1 Seguir el siguiente tutorial https://programmerclick.com/article/7273813279/
+    4.2 Se deja como referencia un web.config de ejemplo en el repositorio
