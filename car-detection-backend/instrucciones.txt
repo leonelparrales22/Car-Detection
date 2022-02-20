@@ -1,7 +1,7 @@
 Ejecutar con:
 flask run
 
-El nombr de la base se la creará como:
+El nombre de la base se la creará como:
 Car_Detection 
 
 Para mandar a guardar el post en el servicio InsertarCarDetectionRegistration se debe usar el siguiente Body:
